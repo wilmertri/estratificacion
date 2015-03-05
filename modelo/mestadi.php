@@ -12,6 +12,63 @@ class mestadi
 		$data = $conexionBD->ejeCon($sql,0);
 		return $data;
 	}
+	/*
+	* Función creada para el conteo de las solicitudes realizadas
+	*
+	*/
+	function conteo_solicitudes()
+	{
+		$sql = "SELECT count(*) as totalsoli FROM tbsolicitud;";
+		$conexionBD = new conexion();
+		$conexionBD->conectarBD();
+		$data = $conexionBD->ejeCon($sql,0);
+		return $data;
+	}
+	/*
+	* Función creada para el conteo de las solicitudes por usuario generador
+	*
+	*/
+	function conteo_soli_generador()
+	{
+		$sql = "SELECT count(*) as totalsoli, usu.nomusu FROM `tbsolicitud` as sol 
+					INNER JOIN tbusuario as usu on sol.usuario=usu.numdocusu
+				GROUP BY usu.nomusu;";
+		$conexionBD = new conexion();
+		$conexionBD->conectarBD();
+		$data = $conexionBD->ejeCon($sql,0);
+		return $data;
+	}
+	/*
+	* Función creada para el conteo de las solicitudes por usuario generador
+	*
+	*/
+	function conteo_soli_mes()
+	{
+		$sql = "SELECT COUNT(*) as solicitud, MONTH(fechasol) as mes, YEAR(fechasol) as año FROM tbsolicitud 
+					WHERE fechasol BETWEEN '2014-12-01 00:00:00' AND NOW() 
+					GROUP BY MONTH(fechasol) 
+					ORDER BY año";
+		$conexionBD = new conexion();
+		$conexionBD->conectarBD();
+		$data = $conexionBD->ejeCon($sql,0);
+		return $data;
+	}
+	/*
+	* Función creada para el conteo de las solicitudes por ubicación zona urbana y veredas
+	*
+	*/
+	function conteo_soli_ubi()
+	{
+		$sql = "SELECT COUNT(*) as solicitud, ver.nomver FROM tbsolicitud as sol 
+					INNER JOIN tbpredio as pr ON sol.predio = pr.idpredio 
+					INNER JOIN tbvereda as ver ON pr.vereda = ver.idvereda 
+				GROUP BY pr.vereda";
+		$conexionBD = new conexion();
+		$conexionBD->conectarBD();
+		$data = $conexionBD->ejeCon($sql,0);
+		return $data;
+	}
+	
 	function selest1($codcas)
 	{
 		$sql1 = "SELECT pr.idpredio, pr.codcas, pr.dirpred, est.numestrato, est.predio, pr.latitud, pr.longitud FROM tbpredio as pr INNER JOIN tbestrato as est ON pr.idpredio=est.predio WHERE pr.codcas = '".$codcas."' AND est.numestrato BETWEEN 1 AND 6 ORDER BY `idestrato` DESC LIMIT 0,1;";

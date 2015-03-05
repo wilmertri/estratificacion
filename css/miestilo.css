@@ -152,9 +152,13 @@ td{
 	background-color: #FFFFFF;
 	height: 460px;	
 }
-#formu{
-	width: 400px;
+.formu{
+	width: 600px;
+	max-height: 400px;
 	margin: 0 auto;
+	border: 3px dotted blue;
+	border-radius: 10px;
+	overflow: auto;
 }
 #contenido
 {
